@@ -1,0 +1,53 @@
+
+//保留*位小数
+var filterNums = function(value, num) {
+    if (isNaN(parseFloat(value))) {
+        return parseFloat(0).toFixed(num)
+    }else{
+        return parseFloat(value).toFixed(num)
+    }
+}
+
+// 手机号中间4位*
+var filterPhone = function(phone) {
+    if (phone == null || phone == '' || phone == undefined) {
+        return ''
+    } else {
+        var phone = phone + ''; //先将传入的参数转为string类型，否则wxs会报错
+        var mphone = phone.substring(0, 3) + '****' + phone.substring(7);
+        return mphone;
+    }
+}
+//名字中间替换*
+var filterName = function(name) {
+    if (name.length === 2) {
+        return name.substring(0, 1) + '*';
+    } else if (name.length > 2) {
+        var len = name.length - 2;
+        var star = '';
+        for (var i = 0; i < len; i++) {
+            star += '*';
+        }
+        return name.substring(0, 1) + star + name.substring(name.length - 1);
+    } else {
+        return name
+    }
+}
+
+//银行卡保留前四位后四位，中间的用*代替
+var filterBankCard = function(name) {
+    var len = name.length - 8;
+    var star = '';
+    for (var i = 0; i < len; i++) {
+        star += '*';
+    }
+    return name.substring(0, 4) + star + name.substring(name.length - 4);
+
+}
+
+module.exports = {
+    filterNums: filterNums,
+    filterPhone: filterPhone,
+    filterName: filterName,
+    filterBankCard: filterBankCard
+}

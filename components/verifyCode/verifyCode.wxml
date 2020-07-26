@@ -1,0 +1,10 @@
+<!-- <view class="verify">
+	<label>短信验证码</label>
+	<input type="number" placeholder="请输入验证码" bindinput="getAuthCode"></input>
+	<button type="primary" bindtap="onGetAuthCodes" disabled="{{count!=60}}">{{count==60?'发送验证码':'重新发送'+count+'s'}}</button>
+</view> -->
+<van-cell-group>
+	<van-field value="{{ sms }}" center clearable label="短信验证码" placeholder="请输入短信验证码" border="{{ false }}" use-button-slot bind:input="getAuthCode">
+		<van-button slot="button" size="small" type="primary" disabled="{{count!=60}}" bind:click="onGetAuthCodes">{{count==60?'发送验证码':'重新发送'+count+'s'}}</van-button>
+	</van-field>
+</van-cell-group>

@@ -1,6 +1,8 @@
 <!--logs.wxml-->
-<view class="container log-list">
+<navbar page-name="你当前页面的名字" bgColor="#ff8a00"></navbar>
+<!-- <view class="container log-list">
   <block wx:for="{{logs}}" wx:for-item="log">
     <text class="log-item">{{index + 1}}. {{log}}</text>
   </block>
-</view>
+</view> -->
+<view>123</view>

@@ -8,7 +8,8 @@ Page({
     motto: 'Hello World',
     userInfo: {},
     hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    authCode: Number
   },
   //事件处理函数
   bindViewTap: function () {
@@ -16,7 +17,7 @@ Page({
       url: '../logs/logs'
     })
   },
-  onChange(){
+  onChange() {
     console.log("change")
   },
   onLoad: function () {
@@ -55,5 +56,11 @@ Page({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
     })
+  },
+  getAuthCode(e) {
+    this.setData({
+      authCode: e.detail.code
+    })
+    console.log(this.data.authCode)
   }
 })

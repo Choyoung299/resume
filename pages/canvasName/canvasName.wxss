@@ -1,0 +1,4 @@
+/* pages/canvasName/canvasName.wxss */
+canvas{
+    border: 2rpx solid red;
+}

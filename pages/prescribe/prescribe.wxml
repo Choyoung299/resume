@@ -1,0 +1,154 @@
+<!--pages/prescribe/prescribe.wxml-->
+<!-- 诊断信息 -->
+<view class="diagnose">
+	<view class="w1h40 flex-aligncenter">症状简述<text class="font-12 col-999 ml-5">(选填)</text></view>
+	<textarea maxlength="-1"></textarea>
+</view>
+
+<!-- 添加照片 -->
+<view class="bg-white plr-10 pb-20">
+	<view class="w1h40 flex-aligncenter bg-white">添加照片</view>
+	<view class="photo">
+		<view class="photo-item" wx:for="{{imgUrl}}" wx:key="key">
+			<image class="cancel" src="/assets/img/icon_cancel.png" data-photoindex="{{index}}" catchtap="delPhoto"></image>
+			<image class="photo" src="{{item}}" data-photoindex="{{index}}" catchtap="lookPhoto"></image>
+		</view>
+		<view class="plus" catchtap="uploadImg" wx:if="{{imgUrl.length<6}}">
+			<image src="/assets/img/add_Photo.png"></image>
+		</view>
+	</view>
+</view>
+
+<!-- 药方信息 -->
+<view class="prescription">
+	<view class="w1h40 flex-sc">
+		<image src="/assets/img/icon_cancel.png" class="icon_logo mr-5"></image>
+		<text>药方信息</text>
+	</view>
+	<view class="w1h40 flex-bc">
+		<view>药方</view>
+		<view class="flex-ec">
+			<text>共14味、</text>
+			<text>137.00g、</text>
+			<text>20.42元</text>
+		</view>
+	</view>
+	<view class="w100">
+		<view class="crude-drugs">
+			<view>全瓜蒌全瓜蒌</view>
+			<text>20g</text>
+		</view>
+		<view class="crude-drugs">
+			<view>全瓜蒌</view>
+			<text>20g</text>
+		</view>
+		<view class="crude-drugs">
+			<view>全瓜蒌</view>
+			<text>20g</text>
+		</view>
+		<view class="crude-drugs">
+			<view>全瓜蒌</view>
+			<text>20g</text>
+		</view>
+
+	</view>
+</view>
+
+<!-- 服药方式 -->
+<view class="medicine">
+	<view class="w1h40 flex-sc">
+		<image src="/assets/img/icon_cancel.png" class="icon_logo mr-5"></image>
+		<text>服药方式</text>
+	</view>
+	<view>
+		<view>用药方式</view>
+		<view class="flex">
+			<view class="means mr-10 checkmeans">内服</view>
+			<view class="means">外服</view>
+		</view>
+	</view>
+	<view>
+		<view>是否代煎</view>
+		<view class="flex">
+			<view class="means mr-10">代煎</view>
+			<view class="means checkmeans">不代煎</view>
+		</view>
+	</view>
+	<view>
+		<view>帖数</view>
+		<view class="flex flex-center">
+			<input type="number" class="packet"></input>
+			<text>帖</text>
+		</view>
+	</view>
+	<view>
+		<view>服用方式</view>
+		<view class="flex flex-cc">
+			<view>一天2次</view>
+			<image src="/assets/img/icon_cancel.png" class="icon_logo ml-5"></image>
+		</view>
+	</view>
+	<view>
+		<view>服用时间</view>
+		<view class="flex flex-cc">
+			<view>饭后半小时服用</view>
+			<image src="/assets/img/icon_cancel.png" class="icon_logo ml-5"></image>
+		</view>
+	</view>
+</view>
+
+<!-- 服用方式选择 -->
+<van-popup show="{{ show }}" position="bottom" custom-style="height: auto;" bind:close="onClose">
+	<view class="w1h40 flex-cc border-b">
+		<text class="col-999">选择服用方式</text>
+		<image src="/assets/img/icon_cancel.png" class="icon_logo" style="position:absolute;right:20rpx;"></image>
+	</view>
+	<view class="w1h40 flex-cc border-b">一天1次</view>
+	<view class="w1h40 flex-cc border-b">一天2次</view>
+	<view class="w1h40 flex-cc border-b">一天3次</view>
+	<view class="w1h40 flex-cc border-b">遵医嘱</view>
+</van-popup>
+
+<!-- 服用时间选择 -->
+<van-popup show="{{ show }}" position="bottom" custom-style="height: auto;" bind:close="onClose">
+	<view class="w1h40 flex-cc border-b">
+		<text class="col-999">选择服用时间</text>
+		<image src="/assets/img/icon_cancel.png" class="icon_logo" style="position:absolute;right:20rpx;"></image>
+	</view>
+	<view class="w1h40 flex-cc border-b">饭后半小时用</view>
+	<view class="w1h40 flex-cc border-b">饭前半小时用</view>
+	<view class="w1h40 flex-cc border-b">空腹服用</view>
+	<view class="w1h40 flex-cc border-b">睡前服用</view>
+	<view class="w1h40 flex-cc border-b">晨起服用</view>
+	<view class="w1h40 flex-cc border-b">其他</view>
+</van-popup>
+
+<!-- 服用禁忌选择 -->
+<van-popup show="{{ show }}" position="bottom" custom-style="height: auto;" bind:close="onClose">
+	<view class="w1h40 flex-cc border-b">
+		<text class="col-999">选择服用禁忌(可多选)</text>
+		<image src="/assets/img/icon_cancel.png" class="icon_logo" style="position:absolute;right:20rpx;"></image>
+	</view>
+	<view class="taboo">
+		<view class="means">无</view>
+		<view class="means">忌油腻</view>
+		<view class="means">忌辛辣</view>
+		<view class="means">忌生冷</view>
+		<view class="means">忌烟酒</view>
+		<view class="means checkmeans">忌发物</view>
+		<view class="means">忌荤腥</view>
+		<view class="means">忌刺激性食物</view>
+		<view class="means checkmeans">忌光敏性食物</view>
+		<view class="means">忌难消化食物</view>
+		<view class="means">备孕禁服</view>
+		<view class="means">怀孕禁服</view>
+		<view class="means">哺乳禁服</view>
+		<view class="means">经期停服</view>
+		<view class="means">感冒停服</view>
+		<view class="means">忌与西药同服</view>
+		<view class="means">忌甜食</view>
+	</view>
+	<view class="plr-10">
+		<view class="taboo-btn">确认</view>
+	</view>
+</van-popup>

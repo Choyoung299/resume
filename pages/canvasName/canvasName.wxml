@@ -1,0 +1,3 @@
+<!--pages/canvasName/canvasName.wxml-->
+<canvas class="sign" canvas-id="sign" bindtouchmove="move" bindtouchstart="start" bindtouchend="end" bindtouchcancel="cancel" bindlongtap="tap" disable-scroll="true" binderror="error">
+</canvas>

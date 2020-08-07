@@ -1,13 +1,10 @@
 /* pages/prescribe/prescribe.wxss */
 page {
     border-top: 2rpx solid #f3f3f3;
+    background-color: #fff;
 }
 
 .diagnose textarea {
-    width: 100%;
-    height: auto;
-    min-height: 140rpx;
-    padding-bottom: 20rpx;
     border-bottom: 2rpx solid #f3f3f3;
 }
 
@@ -16,6 +13,7 @@ page {
     background: #fff;
     overflow: hidden;
     z-index: 99;
+    padding: 10rpx 0;
 }
 
 .photo>view {
@@ -44,8 +42,11 @@ page {
 
 .medicine,
 .diagnose,
-.prescription {
+.prescription,
+.cpoe,
+.order {
     padding: 0 20rpx;
+    border-top: 10rpx solid #f3f3f3;
 }
 
 .prescription{
@@ -71,13 +72,18 @@ page {
     margin:0 10rpx;
 }
 
-.medicine>view:not(:nth-child(1)) {
+.medicine>view:not(:nth-child(1)),
+.cpoe>view:nth-child(2) {
     width: 100%;
     height: 80rpx;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: 2rpx solid #f3f3f3;
+}
+
+.cpoe>view:nth-child(2){
+    border: none;
 }
 
 .means {
@@ -117,4 +123,31 @@ page {
     border-radius: 10rpx;
     background-color: #ffbb18;
     margin-bottom: 20rpx;
+}
+
+.cpoe .taboo{
+    padding: 10rpx;
+}
+
+.cpoe .taboo .means{
+    border:2rpx solid #fff;
+    margin: 0 5rpx 0 0;
+    color: #999;
+}
+
+.cpoe .taboo .means>text{
+    font-size: 28rpx;
+    margin: 0 5rpx;
+    color: #ffbb18;
+}
+
+
+.next-btn{
+    width: 700rpx;
+    height: 80rpx;
+    background-color: #ffbb18;
+    text-align: center;
+    line-height: 80rpx;
+    margin: 80rpx auto;
+    border-radius: 10rpx;
 }

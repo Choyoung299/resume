@@ -87,8 +87,8 @@ image{max-width: 100%;max-height: 100%;display: block;}
 .pr-15{padding-right: 30rpx !important}
 .pr-20{padding-right: 40rpx !important}
 .plr-10{padding: 0 20rpx;}
-.margin-none{margin: 0 !important;}
-.padding-none{padding: 0 !important;}
+.mg-n{margin: 0 !important;}
+.pd-n{padding: 0 !important;}
 .txt-l{text-align: left !important}
 .txt-c{text-align: center !important}
 .txt-r{text-align: right !important}

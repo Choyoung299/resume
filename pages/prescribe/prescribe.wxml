@@ -1,13 +1,25 @@
 <!--pages/prescribe/prescribe.wxml-->
+<!-- 患者信息 -->
+<view class="patient plr-10">
+	<view class="w1h40 flex-sc">
+		<image src="/assets/img/icon_cancel.png" class="icon_logo mr-5"></image>
+		<text>患者信息</text>
+	</view>
+	<van-cell border="{{false}}" title="姓名" value="测试" custom-class="pd-n border-b" custom-style="padding-bottom:10rpx !important;" />
+	<van-cell border="{{false}}" title="性别" value="男" custom-class="pd-n border-b" custom-style="padding-bottom:10rpx !important;" />
+	<van-cell border="{{false}}" title="年龄" value="31岁" custom-class="pd-n" custom-style="padding-bottom:10rpx !important;" />
+</view>
 <!-- 诊断信息 -->
 <view class="diagnose">
 	<view class="w1h40 flex-aligncenter">症状简述<text class="font-12 col-999 ml-5">(选填)</text></view>
-	<textarea maxlength="-1"></textarea>
+	<van-field value="{{ symptomsMsg }}" type="textarea" placeholder="{{showTakeSomeicineTime==true?'':showDirectionsMedicine==true?'':showCpoePopup==true?'':'请输入症状'}}" autosize border="{{ false }}" bind:change="getSymptomsMsg" custom-style="padding:10rpx;font-size:26rpx;" />
+	<view class="w1h40 flex-aligncenter">诊断建议</view>
+	<van-field value="{{ symptomsMsg }}" type="textarea" placeholder="{{showTakeSomeicineTime==true?'':showDirectionsMedicine==true?'':showCpoePopup==true?'':'请输入诊断建议'}}" autosize border="{{ false }}" bind:change="getSymptomsMsg" custom-style="padding:10rpx;font-size:26rpx;" />
 </view>
 
 <!-- 添加照片 -->
-<view class="bg-white plr-10 pb-20">
-	<view class="w1h40 flex-aligncenter bg-white">添加照片</view>
+<view class="plr-10 pb-20">
+	<view class="w1h40 flex-aligncenter bg-white">添加照片<text class="col-999 ml-5 font-12">(选填6张)</text></view>
 	<view class="photo">
 		<view class="photo-item" wx:for="{{imgUrl}}" wx:key="key">
 			<image class="cancel" src="/assets/img/icon_cancel.png" data-photoindex="{{index}}" catchtap="delPhoto"></image>
@@ -24,6 +36,17 @@
 	<view class="w1h40 flex-sc">
 		<image src="/assets/img/icon_cancel.png" class="icon_logo mr-5"></image>
 		<text>药方信息</text>
+	</view>
+	<view class="w100 flex-bc pl-5 pr-5">
+		<view class="flex-aligncenter col-999">
+			<image src="/assets/img/icon_cancel.png" class="icon_logo mr-5"></image>
+			<text>中药饮片</text>
+			<text class="ml-5">广州-康美</text>
+		</view>
+		<view class="flex-aligncenter">
+			<text>修改药库</text>
+			<image src="/assets/img/icon_cancel.png" class="icon_logo ml-5"></image>
+		</view>
 	</view>
 	<view class="w1h40 flex-bc">
 		<view>药方</view>
@@ -50,7 +73,6 @@
 			<view>全瓜蒌</view>
 			<text>20g</text>
 		</view>
-
 	</view>
 </view>
 
@@ -63,92 +85,125 @@
 	<view>
 		<view>用药方式</view>
 		<view class="flex">
-			<view class="means mr-10 checkmeans">内服</view>
-			<view class="means">外服</view>
+			<view class="{{medicine==0?'checkmeans':''}} means mr-10" data-index="0" bindtap="cutMedicine">内服</view>
+			<view class="{{medicine==1?'checkmeans':''}} means" data-index="1" bindtap="cutMedicine">外服</view>
 		</view>
 	</view>
 	<view>
 		<view>是否代煎</view>
 		<view class="flex">
-			<view class="means mr-10">代煎</view>
-			<view class="means checkmeans">不代煎</view>
+			<view class="{{tisane==0?'checkmeans':''}} means mr-10" data-index="0" bindtap="cutTisane">代煎</view>
+			<view class="{{tisane==1?'checkmeans':''}} means" data-index="1" bindtap="cutTisane">不代煎</view>
 		</view>
 	</view>
 	<view>
 		<view>帖数</view>
 		<view class="flex flex-center">
-			<input type="number" class="packet"></input>
+			<input type="number" class="packet" bindinput="getMedicineNum"></input>
 			<text>帖</text>
 		</view>
 	</view>
-	<view>
+	<view bindtap="showDirectionsMedicine">
 		<view>服用方式</view>
 		<view class="flex flex-cc">
-			<view>一天2次</view>
+			<view>{{directionsMedicineArr[directionsMedicineIndex]}}</view>
 			<image src="/assets/img/icon_cancel.png" class="icon_logo ml-5"></image>
 		</view>
 	</view>
-	<view>
+	<view bindtap="showTakeSomeicineTime">
 		<view>服用时间</view>
 		<view class="flex flex-cc">
-			<view>饭后半小时服用</view>
+			<view>{{takeSomeicineTimeArr[takeSomeicineTimeIndex]}}</view>
 			<image src="/assets/img/icon_cancel.png" class="icon_logo ml-5"></image>
 		</view>
 	</view>
 </view>
 
+<!-- 医嘱 -->
+<view class="cpoe">
+	<view class="w1h40 flex-sc">
+		<image src="/assets/img/icon_cancel.png" class="icon_logo mr-5"></image>
+		<text>医嘱</text>
+	</view>
+	<view bindtap="showCpoePopup">
+		<view>服用禁忌</view>
+		<view class="flex flex-cc">
+			<view>请选择</view>
+			<image src="/assets/img/icon_cancel.png" class="icon_logo ml-5"></image>
+		</view>
+	</view>
+	<view class="taboo">
+		<view wx:for="{{checkCpoeArr}}" wx:key="key" class="means"><text>·</text>{{item.name}}</view>
+	</view>
+	<view>
+		<view>医嘱<text class="ml-5 col-999">(选填)</text></view>
+		<van-field value="{{ cpoeMsg }}" type="textarea" placeholder="{{showTakeSomeicineTime==true?'':showDirectionsMedicine==true?'':showCpoePopup==true?'':'点击输入医嘱'}}" autosize border="{{ false }}" bind:change="getCpoeMsg" custom-style="padding:10rpx;font-size:24rpx;" />
+	</view>
+</view>
+
+<!-- 订单信息 -->
+<view class="order">
+	<view class="w1h40 flex-sc">
+		<image src="/assets/img/icon_cancel.png" class="icon_logo mr-5"></image>
+		<text>订单信息</text>
+	</view>
+	<van-cell border="{{false}}" title="开方金额" value="¥81.70" custom-class="pd-n font-16" />
+	<van-cell border="{{false}}" title="诊金" value="¥0.00" custom-class="pd-n font-14" />
+	<van-cell border="{{false}}" title="医药费" value="¥0.00" custom-class="pd-n font-14" />
+	<van-cell border="{{false}}" title="制作费" value="¥0.00" custom-class="mb-10 border-b font-14" custom-style="padding:0 0 20rpx 0" />
+	<van-cell border="{{false}}" title="优惠" value="¥81.70" custom-class="pd-n font-16" />
+	<van-cell border="{{false}}" title="活动优惠" value="¥0.00" custom-class="mb-10 border-b font-14" custom-style="padding:0 0 20rpx 0" />
+	<van-cell border="{{false}}" value="¥0.00" custom-class="mb-10 border-b font-14" custom-style="padding:0 0 20rpx 0">
+		<view slot="title">
+			<view class="van-cell-text">
+				<text>运费</text>
+				<text class="ml-5 font-12 col-999">(医药费满79包邮)</text>
+			</view>
+		</view>
+	</van-cell>
+	<van-cell border="{{false}}" title="合计" value="¥0.00" custom-class="mb-10 font-16" custom-style="padding:0 0 20rpx 0" />
+</view>
+
+
+<view class="next-btn">下一步</view>
+
+<!-- 药库选择 -->
+<van-popup show="{{ showPharmacy }}" position="bottom" custom-style="height: 70%;" bind:close="onClose">
+	<view class="w1h40 flex-cc border-b">
+		<text class="col-999">选择药库</text>
+		<image src="/assets/img/icon_cancel.png" class="icon_logo" style="position:absolute;right:20rpx;" catchtap="onClose"></image>
+	</view>
+	<view>test</view>
+</van-popup>
+
 <!-- 服用方式选择 -->
-<van-popup show="{{ show }}" position="bottom" custom-style="height: auto;" bind:close="onClose">
+<van-popup show="{{ showDirectionsMedicine }}" position="bottom" custom-style="height: auto;" bind:close="onClose">
 	<view class="w1h40 flex-cc border-b">
 		<text class="col-999">选择服用方式</text>
-		<image src="/assets/img/icon_cancel.png" class="icon_logo" style="position:absolute;right:20rpx;"></image>
+		<image src="/assets/img/icon_cancel.png" class="icon_logo" style="position:absolute;right:20rpx;" catchtap="onClose"></image>
 	</view>
-	<view class="w1h40 flex-cc border-b">一天1次</view>
-	<view class="w1h40 flex-cc border-b">一天2次</view>
-	<view class="w1h40 flex-cc border-b">一天3次</view>
-	<view class="w1h40 flex-cc border-b">遵医嘱</view>
+	<view wx:for="{{directionsMedicineArr}}" wx:key="key" data-index="{{index}}" class="w1h40 flex-cc border-b" catchtap="getDirectionsMedicine">{{item}}</view>
 </van-popup>
 
 <!-- 服用时间选择 -->
-<van-popup show="{{ show }}" position="bottom" custom-style="height: auto;" bind:close="onClose">
+<van-popup show="{{ showTakeSomeicineTime }}" position="bottom" custom-style="height: auto;" bind:close="onClose">
 	<view class="w1h40 flex-cc border-b">
 		<text class="col-999">选择服用时间</text>
-		<image src="/assets/img/icon_cancel.png" class="icon_logo" style="position:absolute;right:20rpx;"></image>
+		<image src="/assets/img/icon_cancel.png" class="icon_logo" style="position:absolute;right:20rpx;" catchtap="onClose"></image>
 	</view>
-	<view class="w1h40 flex-cc border-b">饭后半小时用</view>
-	<view class="w1h40 flex-cc border-b">饭前半小时用</view>
-	<view class="w1h40 flex-cc border-b">空腹服用</view>
-	<view class="w1h40 flex-cc border-b">睡前服用</view>
-	<view class="w1h40 flex-cc border-b">晨起服用</view>
-	<view class="w1h40 flex-cc border-b">其他</view>
+	<view wx:for="{{takeSomeicineTimeArr}}" wx:key="key" data-index="{{index}}" class="w1h40 flex-cc border-b" catchtap="getTakeSomeicineTime">{{item}}</view>
 </van-popup>
 
 <!-- 服用禁忌选择 -->
-<van-popup show="{{ show }}" position="bottom" custom-style="height: auto;" bind:close="onClose">
+<van-popup show="{{ showCpoePopup }}" position="bottom" custom-style="height: auto;" bind:close="onClose">
 	<view class="w1h40 flex-cc border-b">
 		<text class="col-999">选择服用禁忌(可多选)</text>
-		<image src="/assets/img/icon_cancel.png" class="icon_logo" style="position:absolute;right:20rpx;"></image>
+		<image src="/assets/img/icon_cancel.png" class="icon_logo" style="position:absolute;right:20rpx;" catchtap="onClose"></image>
 	</view>
 	<view class="taboo">
-		<view class="means">无</view>
-		<view class="means">忌油腻</view>
-		<view class="means">忌辛辣</view>
-		<view class="means">忌生冷</view>
-		<view class="means">忌烟酒</view>
-		<view class="means checkmeans">忌发物</view>
-		<view class="means">忌荤腥</view>
-		<view class="means">忌刺激性食物</view>
-		<view class="means checkmeans">忌光敏性食物</view>
-		<view class="means">忌难消化食物</view>
-		<view class="means">备孕禁服</view>
-		<view class="means">怀孕禁服</view>
-		<view class="means">哺乳禁服</view>
-		<view class="means">经期停服</view>
-		<view class="means">感冒停服</view>
-		<view class="means">忌与西药同服</view>
-		<view class="means">忌甜食</view>
+		<view wx:for="{{cpoeArr}}" wx:key="key" data-index="{{index}}" class="{{item.check==true?'checkmeans':''}} means" bindtap="selectCpoe">{{item.name}}</view>
 	</view>
 	<view class="plr-10">
-		<view class="taboo-btn">确认</view>
+		<view class="taboo-btn" catchtap="onConfirmCpoe">确认</view>
 	</view>
 </van-popup>
